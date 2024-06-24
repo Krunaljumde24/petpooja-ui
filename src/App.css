@@ -1,3 +1,7 @@
+.app {
+  background-color: rgb(208, 232, 233);
+  min-height: 750px;
+}
 .category-card {
   width: 32%;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
@@ -19,14 +23,37 @@ a {
   padding: 5px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .veg-icon {
   width: 30px;
 }
-.add-btn, .add-btn:hover {
+.add-btn,
+.add-btn:hover {
   background-color: rgb(255, 193, 193);
   border-color: brown;
   margin-left: 80%;
 }
+
+/* Login form styling */
+
+.login-form {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  margin-top: 50px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 2px 0px,
+    rgba(0, 0, 0, 0.15) 0px 2px 6px 2px;
+  min-width: 350px;
+  width: 50%;
+  background-color: rgb(255, 245, 129);
+}
+
+.dashboard {
+  background-color: rgb(255, 255, 255);
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 2px 0px,
+    rgba(0, 0, 0, 0.15) 0px 2px 6px 2px;
+}
+

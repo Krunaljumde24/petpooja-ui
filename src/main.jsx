@@ -4,6 +4,8 @@ import App from "./App.jsx";
 import Order from "./components/Order.jsx";
 import Bill from "./components/Bill.jsx";
 import Menu from "./components/Menu.jsx";
+import Login from "./components/Login.jsx";
+import Dashboard from "./components/Dashboard.jsx";
 import "./index.css";
 import {
   Route,
@@ -18,6 +20,8 @@ const router = createBrowserRouter(
       <Route path="/order" element={<Order />} />
       <Route path="/menu" element={<Menu />} />
       <Route path="/get-bill" element={<Bill />} />
+      <Route path="/admin-login" element={<Login />} />
+      <Route path="/admin-dashboard" element={<Dashboard />} />
     </Route>
   )
 );
