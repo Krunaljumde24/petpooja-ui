@@ -43,7 +43,7 @@ function Dashboard() {
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Failed to add Category!");
+        toast.error(err.response.data);
       });
   };
 
