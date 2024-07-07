@@ -70,6 +70,19 @@ function Dashboard() {
                 id="category"
               />
             </div>
+            <div className="mb-3">
+              <label htmlFor="category" className="form-label">
+                Upload an image
+              </label>
+              <input
+                type="file"
+                name="catIcon"
+                id="catIcon"
+                onChange={(event) => {
+                  console.log(event.target.value);
+                }}
+              />
+            </div>
             <button
               className="btn btn-sm btn-primary"
               onClick={(event) => handleAddCategory(event)}
