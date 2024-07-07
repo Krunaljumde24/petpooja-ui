@@ -13,6 +13,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
+import Test from "./components/Test.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
       <Route path="/get-bill" element={<Bill />} />
       <Route path="/admin-login" element={<Login />} />
       <Route path="/admin-dashboard" element={<Dashboard />} />
+      <Route path="/test" element={<Test />} />
     </Route>
   )
 );

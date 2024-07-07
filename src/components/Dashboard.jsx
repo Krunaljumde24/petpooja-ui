@@ -21,7 +21,10 @@ function Dashboard() {
     getCategoryDetails();
   }, []);
 
-  const [category, setCategory] = useState("");
+  const [catDetails, setCatDetails] = useState({
+    catName: "",
+    catImage: "",
+  });
 
   const [menuDetails, setMenuDetails] = useState({
     category: "",
@@ -32,18 +35,24 @@ function Dashboard() {
 
   let handleAddCategory = (event) => {
     event.preventDefault();
-    let url = "http://localhost:8080/category/add-category?name=" + category;
+    console.log(catDetails);
+    let url = "http://localhost:8080/category/add-category";
+
+    let catFormData = new FormData();
+    catFormData.append("categoryName", catDetails.catName);
+    catFormData.append("categoryImage", catDetails.catImage);
+    
     axios
-      .get(url)
-      .then((resp) => {
-        console.log(resp.data);
-        toast.success("Category Added.");
-        getCategoryDetails();
-        setCategory("");
+      .post(url, catFormData, {
+        "Content-Type": "multipart/form-data",
       })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data);
+      .then((resp) => {
+        console.log(resp);
+
+        toast.success("Category Added.");
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -65,8 +74,10 @@ function Dashboard() {
               <input
                 type="text"
                 className="form-control form-control-sm"
-                value={category}
-                onChange={(event) => setCategory(event.target.value)}
+                value={catDetails.catName}
+                onChange={(event) =>
+                  setCatDetails({ ...catDetails, catName: event.target.value })
+                }
                 id="category"
               />
             </div>
@@ -78,8 +89,13 @@ function Dashboard() {
                 type="file"
                 name="catIcon"
                 id="catIcon"
+                className="form-control form-control-sm"
                 onChange={(event) => {
-                  console.log(event.target.value);
+                  console.log(event.target.files);
+                  setCatDetails({
+                    ...catDetails,
+                    catImage: event.target.files[0],
+                  });
                 }}
               />
             </div>
