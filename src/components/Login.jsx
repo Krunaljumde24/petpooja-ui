@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [loginDetails, setLoginDetails] = useState({
@@ -13,6 +14,7 @@ function Login() {
   return (
     <div className="container">
       <div className="login-form">
+        <h4>Login Form</h4>
         <form>
           <div className="mb-3">
             <label htmlFor="uname" className="form-label">
@@ -56,6 +58,9 @@ function Login() {
             Login
           </button>
         </form>
+        <p>
+          New to Petpooja, <Link> click here to Register. </Link>
+        </p>
       </div>
     </div>
   );

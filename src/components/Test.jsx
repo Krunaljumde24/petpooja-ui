@@ -23,6 +23,10 @@ function Test() {
       })
       .then((resp) => {
         console.log(resp);
+        setCategoryDetails({
+          catName: "",
+          catImage: null,
+        });
       })
       .catch((error) => {
         console.log(error);
