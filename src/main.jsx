@@ -6,6 +6,7 @@ import Bill from "./components/Bill.jsx";
 import Menu from "./components/Menu.jsx";
 import Login from "./components/Login.jsx";
 import Dashboard from "./components/Dashboard.jsx";
+import SignUp from "./components/SignUp.jsx";
 import "./index.css";
 import {
   Route,
@@ -21,7 +22,8 @@ const router = createBrowserRouter(
       <Route path="/order" element={<Order />} />
       <Route path="/menu" element={<Menu />} />
       <Route path="/get-bill" element={<Bill />} />
-      <Route path="/admin-login" element={<Login />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
       <Route path="/admin-dashboard" element={<Dashboard />} />
       <Route path="/test" element={<Test />} />
     </Route>

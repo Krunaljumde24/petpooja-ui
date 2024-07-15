@@ -8,7 +8,7 @@ function Login() {
   });
 
   const handleLogin = (event) => {
-    console.log(loginDetails);
+    // event.preventDefault();
   };
 
   return (
@@ -21,6 +21,7 @@ function Login() {
               Username
             </label>
             <input
+              required
               type="text"
               className="form-control"
               id="uname"
@@ -38,6 +39,7 @@ function Login() {
               Password
             </label>
             <input
+              required
               type="password"
               className="form-control"
               id="upass"
@@ -59,7 +61,10 @@ function Login() {
           </button>
         </form>
         <p>
-          New to Petpooja, <Link> click here to Register. </Link>
+          New to Petpooja, click here to
+          <button className="btn btn-sm btn-warning">
+            <Link to="/signup"> Register </Link>
+          </button>
         </p>
       </div>
     </div>
