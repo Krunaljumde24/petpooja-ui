@@ -7,19 +7,27 @@ function Test() {
     catImage: null,
   });
 
+  const [imgBase64, setImgBase64] = useState("");
+
+  let fileToBase64 = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImgBase64(reader.result);
+      console.log(reader.result);
+    };
+  };
+
   let handleAddCategory = (event) => {
     event.preventDefault();
     console.log(categoryDetails);
 
-    let url = "http://localhost:8080/test/add-category";
-
-    let formdata = new FormData();
-    formdata.append("name", categoryDetails.catName);
-    formdata.append("image", categoryDetails.catImage);
+    let url = "http://localhost:8080/test/upload-image";
 
     axios
-      .post(url, formdata, {
-        "Content-Type": "multipart/form-data",
+      .post(url, {
+        name: categoryDetails.catName,
+        image: imgBase64,
       })
       .then((resp) => {
         console.log(resp);
@@ -63,15 +71,18 @@ function Test() {
             </label>
             <input
               type="file"
+              accept="image/*"
               name="catIcon"
               id="catIcon"
               className="form-control form-control-sm"
               value={null}
               onChange={(event) => {
+                console.log(event.target.files[0]);
                 setCategoryDetails({
                   ...categoryDetails,
                   catImage: event.target.files[0],
                 });
+                fileToBase64(event.target.files[0]);
               }}
             />
           </div>

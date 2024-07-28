@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
 function SignUp() {
   const [userDetail, setUserDetails] = useState({
     name: "",
@@ -8,6 +9,12 @@ function SignUp() {
     mobileNumber: "",
     emailId: "",
   });
+
+  let handleLogin = (event) => {
+    event.preventDefault();
+
+    console.log("login");
+  };
 
   return (
     <div className="container">

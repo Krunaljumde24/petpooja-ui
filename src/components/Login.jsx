@@ -1,15 +1,36 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Login() {
+  const { login, logout } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
   const [loginDetails, setLoginDetails] = useState({
     username: "",
     password: "",
   });
 
   const handleLogin = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
+    let { username, password } = loginDetails;
+    if (username && password && username != "" && password != "") {
+      login(username, password)
+        ? navigate("/dashboard")
+        : toast.error("Failed to login");
+    } else {
+      toast.error("Please enter username and password!");
+    }
   };
+
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("userDetails"));
+    if (user && user.isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   return (
     <div className="container">
@@ -53,7 +74,7 @@ function Login() {
             />
           </div>
           <button
-            type="button"
+            type="submit"
             className="btn btn-primary"
             onClick={(event) => handleLogin(event)}
           >
