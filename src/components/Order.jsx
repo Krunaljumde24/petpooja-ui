@@ -1,41 +1,31 @@
-import React from "react";
-import burger from "../assets/hamburger.png";
-import sandwich from "../assets/sandwich.png";
-import pizza from "../assets/pizza.png";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import CategoryCard from "./CategoryCard";
+import axios from "axios";
 
 function Order() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8090/category/get-category")
+      .then((res) => {
+        console.log(res.data);
+        setCategories(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <div className="container">
       <h6>Catogory</h6>
-
       <div className="row justify-content-between">
-        <div className="col-3 mx-1 my-1 category-card text-center">
-          <Link to="/menu" state={{ category: "burger" }}>
-            <div>
-              <img src={burger} className="card-icon" alt="" />
-            </div>
-            <b>Burger</b>
-          </Link>
-        </div>
-
-        <div className="col-3 mx-1 my-1 category-card text-center">
-          <Link to="/menu" state={{ category: "sandwich" }}>
-            <div>
-              <img src={sandwich} className="card-icon" alt="" />
-            </div>
-            <b>Sandwich</b>
-          </Link>
-        </div>
-
-        <div className="col-3 mx-1 my-1 category-card text-center">
-          <Link to="/menu" state={{ category: "pizza" }}>
-            <div>
-              <img src={pizza} className="card-icon" alt="" />
-            </div>
-            <b>Pizza</b>
-          </Link>
-        </div>
+        {categories.map((obj, index) => {
+          return (
+            <CategoryCard category={obj.name} icon={obj.imageURL} key={index} />
+          );
+        })}
       </div>
     </div>
   );

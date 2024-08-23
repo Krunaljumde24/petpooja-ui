@@ -1,16 +1,30 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import veg from "../assets/veg.png";
+import nonVeg from "../assets/nonVeg.png";
 
 function Dashboard() {
-  const [categoryList, setCategoryList] = useState([]);
+  const [categoryNameList, setCategoryNameList] = useState([]);
 
   let getCategoryDetails = () => {
     axios
-      .get("http://localhost:8080/category/get-category")
+      .get("http://localhost:8090/category/get-category")
       .then((resp) => {
-        console.log(resp.data);
-        setCategoryList(resp.data);
+        // success
+        if (resp.status && resp.status === 200) {
+          let data = resp.data;
+          let catSet = new Set();
+          data.map((obj) => {
+            catSet.add(obj.name);
+          });
+          setCategoryNameList([...catSet]);
+        } else if (resp.response.status && resp.response.status === 400) {
+          toast.success("Category Added.");
+        }
+        // bad request
+
+        // error
       })
       .catch((err) => {
         console.log(err);
@@ -31,34 +45,109 @@ function Dashboard() {
     item: "",
     description: "",
     price: "",
+    type: "",
+    image: "",
   });
+
 
   let handleAddCategory = (event) => {
     event.preventDefault();
-    console.log(catDetails);
-    let url = "http://localhost:8080/category/add-category";
-
-    let catFormData = new FormData();
-    catFormData.append("categoryName", catDetails.catName);
-    catFormData.append("categoryImage", catDetails.catImage);
-    
+    let url = "http://localhost:8090/category/add-category";
     axios
-      .post(url, catFormData, {
-        "Content-Type": "multipart/form-data",
-      })
+      .post(url, catDetails)
       .then((resp) => {
-        console.log(resp);
-
         toast.success("Category Added.");
+        setCatDetails({
+          catName: "",
+          catImage: "",
+        });
+        document.getElementById("catIcon").value = "";
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Something went wrong!");
       });
+  };
+
+  let validateMenuDetails = () => {
+    const { category, description, image, item, price, type } = menuDetails;
+    if (
+      typeof category === "string" &&
+      category.length > 0 &&
+      category != "Select" &&
+      typeof description === "string" &&
+      description.length > 0 &&
+      typeof image === "string" &&
+      image.length > 0 &&
+      typeof item === "string" &&
+      item.length > 0 &&
+      typeof type === "string" &&
+      type.length > 0 &&
+      typeof price === "string" &&
+      price > 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   let handleAddMenu = (event) => {
     event.preventDefault();
-    console.log(menuDetails);
+    if (validateMenuDetails()) {
+      axios
+        .post("http://localhost:8090/menu/add-menu-item", menuDetails)
+        .then((resp) => {
+          toast.success("Menu Added.");
+          setMenuDetails({
+            category: "",
+            item: "",
+            description: "",
+            price: "",
+            type: "",
+            image: "",
+          });
+          document.getElementById("menuIcon").value = "";
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Failed to add menu!");
+        });
+    } else {
+      toast("Please select all fields", {
+        duration: 4000,
+        position: "top-center",
+        style: {},
+        className: "",
+        icon: "⚠️",
+        iconTheme: {
+          primary: "#000",
+          secondary: "#fff",
+        },
+        ariaProps: {
+          role: "status",
+          "aria-live": "polite",
+        },
+      });
+    }
+  };
+
+  let convertImgToBase64 = (file, type) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      if (type === "cat") {
+        setCatDetails({
+          ...catDetails,
+          catImage: reader.result,
+        });
+      } else if (type === "menu") {
+        setMenuDetails({
+          ...menuDetails,
+          image: reader.result,
+        });
+      }
+    };
   };
 
   return (
@@ -86,17 +175,14 @@ function Dashboard() {
                 Upload an image
               </label>
               <input
+                required
                 type="file"
                 name="catIcon"
                 id="catIcon"
                 className="form-control form-control-sm"
-                onChange={(event) => {
-                  console.log(event.target.files);
-                  setCatDetails({
-                    ...catDetails,
-                    catImage: event.target.files[0],
-                  });
-                }}
+                onChange={(event) =>
+                  convertImgToBase64(event.target.files[0], "cat")
+                }
               />
             </div>
             <button
@@ -119,6 +205,7 @@ function Dashboard() {
               <select
                 className="form-select form-select-sm"
                 aria-label="Default select example"
+                required
                 value={menuDetails.category}
                 onChange={(event) => {
                   setMenuDetails({
@@ -127,11 +214,13 @@ function Dashboard() {
                   });
                 }}
               >
-                <option disabled selected>
-                  Select
-                </option>
-                {categoryList.map((cat) => {
-                  return <option value={cat}>{cat}</option>;
+                <option>Select</option>
+                {categoryNameList.map((cat, index) => {
+                  return (
+                    <option value={cat} key={index}>
+                      {cat}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -167,6 +256,64 @@ function Dashboard() {
                   })
                 }
               ></textarea>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="menuIcon" className="form-label">
+                Upload an image
+              </label>
+              <input
+                required
+                type="file"
+                name="menuIcon"
+                id="menuIcon"
+                className="form-control form-control-sm"
+                onChange={(event) =>
+                  convertImgToBase64(event.target.files[0], "menu")
+                }
+              />
+            </div>
+
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="vegNonVegInput"
+                id="vegInput"
+                defaultValue="Veg"
+                onChange={(event) => {
+                  setMenuDetails({
+                    ...menuDetails,
+                    type: event.target.value,
+                  });
+                }}
+              />
+              <label className="form-check-label" htmlFor="vegInput">
+                <img src={veg} alt="veg_icon" style={{ width: "22px" }} /> Veg
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="vegNonVegInput"
+                id="nonVegInput"
+                defaultValue="Non-Veg"
+                onChange={(event) =>
+                  setMenuDetails({
+                    ...menuDetails,
+                    type: event.target.value,
+                  })
+                }
+              />
+              <label className="form-check-label" htmlFor="nonVegInput">
+                <img
+                  src={nonVeg}
+                  alt="non_veg_icon"
+                  style={{ width: "22px" }}
+                />{" "}
+                Non-Veg
+              </label>
             </div>
 
             <div className="mb-3">

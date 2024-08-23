@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+
 
 function Test() {
   const [categoryDetails, setCategoryDetails] = useState({
@@ -9,36 +11,30 @@ function Test() {
 
   const [imgBase64, setImgBase64] = useState("");
 
-  let fileToBase64 = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImgBase64(reader.result);
-      console.log(reader.result);
-    };
-  };
-
   let handleAddCategory = (event) => {
     event.preventDefault();
-    console.log(categoryDetails);
-
     let url = "http://localhost:8080/test/upload-image";
-
+    let data = {
+      name: categoryDetails.catName,
+      image: imgBase64,
+    };
     axios
-      .post(url, {
-        name: categoryDetails.catName,
-        image: imgBase64,
-      })
+      .post(url, data)
       .then((resp) => {
         console.log(resp);
-        setCategoryDetails({
-          catName: "",
-          catImage: null,
-        });
+        toast.success("Category Added.");
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  let convertImageToBase64 = (file) => {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImgBase64(reader.result);
+    };
   };
 
   return (
@@ -77,12 +73,11 @@ function Test() {
               className="form-control form-control-sm"
               value={null}
               onChange={(event) => {
-                console.log(event.target.files[0]);
                 setCategoryDetails({
                   ...categoryDetails,
                   catImage: event.target.files[0],
                 });
-                fileToBase64(event.target.files[0]);
+                convertImageToBase64(event.target.files[0]);
               }}
             />
           </div>

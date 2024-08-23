@@ -1,42 +1,34 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import vegIcon from "../assets/veg.png";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import MenuCard from "./MenuCard";
 
 function Menu() {
   let { state } = useLocation();
 
-  let category = state.category;
   return (
     <div className="container">
-      <h5>Menu : {category}</h5>
-      <div className="menu">
-        <div className="menu-item">
-          <p>
-            <img src={vegIcon} className="veg-icon" alt="veg_icon" />
-            <b>Cheese Burger</b>
-          </p>
-
-          <button className="btn btn-sm add-btn">Add + </button>
-        </div>
-
-        <div className="menu-item">
-          <p>
-            <img src={vegIcon} className="veg-icon" alt="veg_icon" />
-            <b>Cheese Burger</b>
-          </p>
-
-          <button className="btn btn-sm add-btn">Add + </button>
-        </div>
-
-        <div className="menu-item">
-          <p>
-            <img src={vegIcon} className="veg-icon" alt="veg_icon" />
-            <b>Cheese Burger</b>
-          </p>
-
-          <button className="btn btn-sm add-btn">Add + </button>
-        </div>
-      </div>
+      {state ? (
+        <>
+          <h5>Menu : {state.category}</h5>
+          <div className="menu">
+            <MenuCard category={state.category} />
+          </div>
+        </>
+      ) : (
+        <>
+          <h5>
+            Please select a{" "}
+            <Link to="/order" replace={true}>
+              <button
+                className="btn btn-sm"
+                style={{ backgroundColor: "yellow" }}
+              >
+                Category
+              </button>
+            </Link>
+          </h5>
+        </>
+      )}
     </div>
   );
 }

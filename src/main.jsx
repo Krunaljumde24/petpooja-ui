@@ -8,6 +8,7 @@ import Login from "./components/Login.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import SignUp from "./components/SignUp.jsx";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
+import Test from "./components/Test.jsx";
 import "./index.css";
 import {
   Route,
@@ -15,7 +16,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import Test from "./components/Test.jsx";
+import Test2 from "./components/Test2.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
       <Route path="/signup" element={<SignUp />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/test" element={<Test />} />
+      <Route path="/test2" element={<Test2 />} />
     </Route>
   )
 );

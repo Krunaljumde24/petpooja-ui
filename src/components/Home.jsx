@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import logo from "../assets/logo.png";
 
 function Home() {
   const { logout } = useContext(AuthContext);
@@ -9,8 +10,9 @@ function Home() {
   return (
     <div className="container home">
       <h4>
-        img
-        Fuel Station</h4>
+        <img src={logo} alt="logo " />
+        Fuel Station
+      </h4>
       <p>Order your food on table.</p>
       <button type="button" className="btn btn-sm btn-warning ">
         <Link to="/order" replace={true}>
