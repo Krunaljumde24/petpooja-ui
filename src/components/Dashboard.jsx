@@ -8,8 +8,9 @@ function Dashboard() {
   const [categoryNameList, setCategoryNameList] = useState([]);
 
   let getCategoryDetails = () => {
+    let url = process.env.REACT_APP_SERVER_API_URL + "category/get-category";
     axios
-      .get("http://localhost:8090/category/get-category")
+      .get(url)
       .then((resp) => {
         // success
         if (resp.status && resp.status === 200) {
@@ -49,10 +50,9 @@ function Dashboard() {
     image: "",
   });
 
-
   let handleAddCategory = (event) => {
     event.preventDefault();
-    let url = "http://localhost:8090/category/add-category";
+    let url = process.env.REACT_APP_SERVER_API_URL + "category/add-category";
     axios
       .post(url, catDetails)
       .then((resp) => {
@@ -95,8 +95,9 @@ function Dashboard() {
   let handleAddMenu = (event) => {
     event.preventDefault();
     if (validateMenuDetails()) {
+      let url = process.env.REACT_APP_SERVER_API_URL + "menu/add-menu-item";
       axios
-        .post("http://localhost:8090/menu/add-menu-item", menuDetails)
+        .post(url, menuDetails)
         .then((resp) => {
           toast.success("Menu Added.");
           setMenuDetails({

@@ -6,10 +6,10 @@ function Order() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+    let url = process.env.REACT_APP_SERVER_API_URL + "category/get-category";
     axios
-      .get("http://localhost:8090/category/get-category")
+      .get(url)
       .then((res) => {
-        console.log(res.data);
         setCategories(res.data);
       })
       .catch((err) => {

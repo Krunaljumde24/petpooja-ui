@@ -15,7 +15,9 @@ function Menu() {
     if (state && state.category) {
       let category = state.category;
       let url =
-        "http://localhost:8090/menu/get-item-by-category?category=" + category;
+        process.env.REACT_APP_SERVER_API_URL +
+        "menu/get-item-by-category?category=" +
+        category;
       axios
         .get(url)
         .then((resp) => {
